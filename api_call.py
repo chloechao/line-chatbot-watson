@@ -25,16 +25,14 @@ class IbmAssistant:
         return self.assistant.list_workspaces()
 
     def message_request(self, message):
-        conversation_id = self.mc.get('conversation_id')
         context = self.mc.get('context')
+
+        # set default timezone
         if context is None:
             context = dict()
             context['timezone'] = 'Asia/Tokyo'
             context['no_reservation'] = True
 
-        print('CONVER_ID-init')
-        print(conversation_id)
-        print(context)
         response = self.assistant.message(
             workspace_id=self.workspace_id,
             input={
@@ -43,12 +41,7 @@ class IbmAssistant:
             alternate_intents=True,
             context=context,
             )
-        print(response)
-        conversation_id = response.get('context').get('conversation_id')
+
         context = response.get('context')
-        print('CONVER ID:')
-        print(conversation_id)
-        print(context)
-        self.mc.set('conversation_id', conversation_id)
         self.mc.set('context', context)
         return response.get('output').get('generic')[0].get('text')
