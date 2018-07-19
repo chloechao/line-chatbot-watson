@@ -30,4 +30,5 @@ class IbmAssistant:
                     'deployment': 'myDeployment'
                 }
             })
+        print(response.get('output'))
         return response.get('output').get('generic')[0].get('text')
