@@ -25,7 +25,10 @@ class IbmAssistant:
 
     def message_request(self, message):
         conversation_id = self.mc.get('conversation_id')
-        context = self.mc.get('context')
+        context = self.mc.get('context', dict())
+        context['timezone'] = 'Asia/Tokyo'
+        context['no_reservation'] = True
+
         print('CONVER_ID-init')
         print(conversation_id)
         print(context)
@@ -36,8 +39,6 @@ class IbmAssistant:
             },
             alternate_intents=True,
             context=context,
-#            'timezone': 'Asia/Tokyo',
-#            'no_reservation': True
             )
         print(response)
         conversation_id = response.get('context').get('conversation_id')
