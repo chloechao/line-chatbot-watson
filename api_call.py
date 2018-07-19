@@ -32,12 +32,13 @@ class IbmAssistant:
             input={
                 'text': message
             },
+            system={
+                'timezone':'Asia/Tokyo',
+                'no_reservation':True
+            },
             alternate_intents=True,
             context={
-                'conversation_id': conversation_id,
-                'metadata': {
-                    'deployment': 'myDeployment'
-                }
+                'conversation_id': conversation_id
             })
         print(response)
         conversation_id = response.get('context').get('conversation_id')
@@ -45,3 +46,4 @@ class IbmAssistant:
         print(conversation_id)
         self.mc.set('conversation_id', conversation_id)
         return response.get('output').get('generic')[0].get('text')
+
