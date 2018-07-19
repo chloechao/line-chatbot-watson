@@ -1,0 +1,4 @@
+gunicorn
+watson-developer-cloud>=1.5.0
+line-bot-sdk
+flask
