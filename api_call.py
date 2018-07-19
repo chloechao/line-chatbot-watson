@@ -25,10 +25,11 @@ class IbmAssistant:
             input={
                 'text': message
             },
+            "alternate_intents": true,
             context={
                 'metadata': {
                     'deployment': 'myDeployment'
                 }
             })
-        print(response.get('output'))
+        print(response)
         return response.get('output').get('generic')[0].get('text')
