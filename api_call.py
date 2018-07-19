@@ -25,10 +25,10 @@ class IbmAssistant:
         return self.assistant.list_workspaces()
 
     def message_request(self, message):
-        context = dict()
         conversation_id = self.mc.get('conversation_id')
         context = self.mc.get('context')
         if context is None:
+            context = dict()
             context['timezone'] = 'Asia/Tokyo'
             context['no_reservation'] = True
 
