@@ -48,7 +48,7 @@ class IbmAssistant:
         print(response)
         conversation_id = response.get('context').get('conversation_id')
         dialog_node = response.get('context').get('system').get(
-            'dialog_stack')[0].get('dialog_node'
+            'dialog_stack')[0].get('dialog_node')
         print('CONVER ID:')
         print(conversation_id)
         print(dialog_node)
