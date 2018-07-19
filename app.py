@@ -14,6 +14,7 @@
 
 import os
 import sys
+from api_call import IbmAssistant
 from argparse import ArgumentParser
 
 from flask import Flask, request, abort
@@ -23,9 +24,7 @@ from linebot import (
 from linebot.exceptions import (
     InvalidSignatureError
 )
-from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
-)
+from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 app = Flask(__name__)
 
@@ -41,6 +40,14 @@ if channel_access_token is None:
 
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
+assistant = IbmAssistant()
+
+
+@handler.add(MessageEvent, message=TextMessage)
+def handle_text_message(event):
+    response_message = assistant.message_request(event.message.text)
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(
+        text=response_message))
 
 
 @app.route("/callback", methods=['POST'])
@@ -59,14 +66,6 @@ def callback():
         abort(400)
 
     return 'OK'
-
-
-@handler.add(MessageEvent, message=TextMessage)
-def message_text(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=event.message.text)
-    )
 
 
 if __name__ == "__main__":
