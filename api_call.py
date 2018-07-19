@@ -25,7 +25,7 @@ class IbmAssistant:
             input={
                 'text': message
             },
-            "alternate_intents": True,
+            "alternate_intents"=True,
             context={
                 'metadata': {
                     'deployment': 'myDeployment'
