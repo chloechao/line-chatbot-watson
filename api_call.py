@@ -19,6 +19,7 @@ class IbmAssistant:
     mc = bmemcached.Client(os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
                            os.environ.get('MEMCACHEDCLOUD_USERNAME'),
                            os.environ.get('MEMCACHEDCLOUD_PASSWORD'))
+    mc.delete('context')
 
     def list_workspace(self):
         return self.assistant.list_workspaces()
