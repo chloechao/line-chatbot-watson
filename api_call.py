@@ -25,8 +25,10 @@ class IbmAssistant:
 
     def message_request(self, message):
         conversation_id = self.mc.get('conversation_id')
+        dialog_node = self.mc.get('dialog_node', 'root')
         print('CONVER_ID-init')
         print(conversation_id)
+        print(dialog_node)
         response = self.assistant.message(
             workspace_id=self.workspace_id,
             input={
@@ -36,13 +38,20 @@ class IbmAssistant:
             context={
                 'conversation_id': conversation_id,
                 'system': {
-                    'timezone': 'Asia/Tokyo',
-                    'no_reservation': True
+                    'dialog_stack': [
+                        {'dialog_node': dialog_node}],
                 },
+                'timezone': 'Asia/Tokyo',
+                'no_reservation': True
+
             })
         print(response)
         conversation_id = response.get('context').get('conversation_id')
+        dialog_node = response.get('context').get('system').get(
+            'dialog_stack')[0].get('dialog_node'
         print('CONVER ID:')
         print(conversation_id)
+        print(dialog_node)
         self.mc.set('conversation_id', conversation_id)
+        self.mc.set('dialog_node', dialog_node)
         return response.get('output').get('generic')[0].get('text')
