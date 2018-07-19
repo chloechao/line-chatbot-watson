@@ -35,13 +35,10 @@ class IbmAssistant:
 
         response = self.assistant.message(
             workspace_id=self.workspace_id,
-            input={
-                'text': message
-            },
+            input={'text': message},
             alternate_intents=True,
             context=context,
             )
 
-        context = response.get('context')
-        self.mc.set('context', context)
+        self.mc.set('context', response.get('context'))
         return response.get('output').get('generic')[0].get('text')
