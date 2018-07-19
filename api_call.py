@@ -34,7 +34,7 @@ class IbmAssistant:
             },
             alternate_intents=True,
             context={
-                'conversation_id': self.conversation_id,
+                'conversation_id': conversation_id,
                 'metadata': {
                     'deployment': 'myDeployment'
                 }
