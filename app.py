@@ -45,11 +45,9 @@ assistant = IbmAssistant()
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
-    if event.message.text == 'Hi':
-        print(event.message.text)
-        response_message = assistant.message_request(event.message.text)
-        line_bot_api.reply_message(event.reply_token, TextMessage(
-            text=response_message))
+    response_message = assistant.message_request(event.message.text)
+    line_bot_api.reply_message(event.reply_token, TextMessage(
+        text=response_message))
 
 
 @app.route("/callback", methods=['POST'])
