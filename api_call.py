@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from watson_developer_cloud import AssistantV1
-from pymemcache.client import base
+import bmemcached
 import os
 
 
@@ -16,13 +16,15 @@ class IbmAssistant:
         version='2018-07-10')
 
     workspace_id = '1ef0a9c1-f07e-4bb7-adfc-0d0f3fb6ff4a'
-    client = base.Client(('localhost', 11211))
+    mc = bmemcached.Client(os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
+                           os.environ.get('MEMCACHEDCLOUD_USERNAME'),
+                           os.environ.get('MEMCACHEDCLOUD_PASSWORD'))
 
     def list_workspace(self):
         return self.assistant.list_workspaces()
 
     def message_request(self, message):
-        conversation_id = self.client.get('conversation_id')
+        conversation_id = self.mc.get('conversation_id')
         print('CONVER_ID-init')
         print(conversation_id)
         response = self.assistant.message(
@@ -41,5 +43,5 @@ class IbmAssistant:
         conversation_id = response.get('context').get('conversation_id')
         print('CONVER ID:')
         print(conversation_id)
-        self.client.set('conversation_id', conversation_id)
+        self.mc.set('conversation_id', conversation_id)
         return response.get('output').get('generic')[0].get('text')
